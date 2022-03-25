@@ -4,11 +4,13 @@ import { StyleSheet } from "react-native";
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { buttonStyles  } from "../../constants/enums";
+import { useNavigation } from '@react-navigation/native';
 
 
 const ConfirmEmailScreen = () => {
 
     const [code, setCode] = useState('');
+    const navigation = useNavigation();
 
     const resendCode = () => {
         console.warn("resendcode");
@@ -19,8 +21,7 @@ const ConfirmEmailScreen = () => {
     }
 
     const redirectToSignIn = () => {
-        // this.props.navigation.navigate('Signin');
-        console.warn("redirectToSignIn");
+        navigation.navigate('Signin');
     }
 
   return (

@@ -6,24 +6,26 @@ import CustomButton from '../../components/CustomButton';
 import SocialSignInButton from '../../components/SocialSignInButton';
 import Logo  from '../../../assets/Images/Logo_1.png';
 import { buttonStyles  } from "../../constants/enums";
+import { useNavigation } from '@react-navigation/native';
 
 
 const SignInScreen = () => {
   const { height: HEIGHT, width: WIDTH} = Dimensions.get('window');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigation = useNavigation();
+
   const loginPress = () => {
-    console.warn("pressed loginPress");
     // this.props.navigation.navigate('Root');
+    navigation.navigate("Home");
   }
   const forgotPass = () => {
-    console.warn('forgotPass')
-    // this.props.navigation.navigate('ForgotPassword');
+    navigation.navigate('ForgotPassword');
   }
 
   const redirectToSignUp = () => {
-    // this.props.navigation.navigate('Signup');
-    console.warn('redirectToSignUp');
+    navigation.navigate('SignUp');
   }
   return (
       <ScrollView showsVerticalScrollIndicator={false}>

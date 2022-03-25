@@ -5,6 +5,7 @@ import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import SocialSignInButton from '../../components/SocialSignInButton';
 import { buttonStyles  } from "../../constants/enums";
+import { useNavigation } from '@react-navigation/native';
 
 
 const SignUpScreen = () => {
@@ -13,6 +14,7 @@ const SignUpScreen = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+    const navigation = useNavigation();
 
     const register = () => {
         console.warn("new account");
@@ -23,8 +25,7 @@ const SignUpScreen = () => {
     }
 
     const redirectToSignIn = () => {
-        // this.props.navigation.navigate('Signin');
-        console.warn("redirectToSignIn");
+        navigation.navigate('SignIn');
     }
   return (
     <ScrollView showsVerticalScrollIndicator={false}>

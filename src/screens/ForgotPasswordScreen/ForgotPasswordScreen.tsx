@@ -4,18 +4,20 @@ import { StyleSheet } from "react-native";
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { buttonStyles  } from "../../constants/enums";
+import { useNavigation } from '@react-navigation/native';
+
 
 const ForgotPasswordScreen = () => {
 
     const [email, setEmail] = useState('');
+    const navigation = useNavigation();
 
      const confirm = () => {
-        console.warn("new account");
+        navigation.navigate("Home")
     }
 
     const redirectToSignIn = () => {
-        // this.props.navigation.navigate('Signin');
-        console.warn("redirectToSignIn");
+        navigation.navigate("SignIn");
     }
 
   return (

@@ -4,12 +4,15 @@ import { StyleSheet } from "react-native";
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { buttonStyles  } from "../../constants/enums";
+import { useNavigation } from '@react-navigation/native';
+
 
 const NewPasswordScreen = () => {
 
     const [code, setCode] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const navigation = useNavigation();
     
     const confirm = () => {
         console.warn("new account");
@@ -18,8 +21,7 @@ const NewPasswordScreen = () => {
     
 
     const redirectToSignIn = () => {
-        // this.props.navigation.navigate('Signin');
-        console.warn("redirectToSignIn");
+        navigation.navigate('SignIn');
     }
 
     const resendCode = () => {
