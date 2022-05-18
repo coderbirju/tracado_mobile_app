@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Alert } from "react-native";
 import { StyleSheet } from "react-native";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { buttonStyles } from "../../constants/enums";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
-
+import { Auth } from "aws-amplify";
 const ForgotPasswordScreen = () => {
 
   const navigation = useNavigation();
@@ -14,11 +14,26 @@ const ForgotPasswordScreen = () => {
     control,
     handleSubmit,
     formState: { errors },
+    watch
   } = useForm();
 
-  const confirm = (data) => {
-    console.log('data: ', data);
-    navigation.navigate("Home");
+  const [loading, setLoading] = useState(false);
+
+  const confirm = async (data: { username: string; }) => {
+    // console.log('data: ', data);
+    // navigation.navigate("Home");
+    if(loading){
+      return;
+    }
+    const { username } = data;
+    try{
+      setLoading(true);
+      await Auth.forgotPassword(username);
+      navigation.navigate("NewPassword", {username});
+    } catch(e){
+      Alert.alert("OOPS", e.message);
+    }
+    setLoading(false);
   };
 
   const redirectToSignIn = () => {

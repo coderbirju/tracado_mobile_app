@@ -1,22 +1,26 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Alert } from "react-native";
 import { StyleSheet } from "react-native";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { buttonStyles } from "../../constants/enums";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
+import { Auth } from "aws-amplify";
 
 const NewPasswordScreen = () => {
+  const route = useRoute();
   const navigation = useNavigation();
-
+  const [loading, setLoading] = useState(false);
+  
   const {
     control,
     handleSubmit,
     formState: { errors },
     watch
-  } = useForm();
+  } = useForm({defaultValues: {username: route?.params?.username}});
 
+  const username = watch('username');
   /*
   Using default values to prepopulate input texts
 
@@ -27,17 +31,25 @@ const NewPasswordScreen = () => {
 
   const pwd = watch('password');
 
-  const confirm = (data) => {
-    console.log('data: ', data);
-    console.warn("new account");
+  const confirm = async (data) => {
+    if(loading){
+      return;
+    }
+
+    const { code, password } = data;
+
+    try{
+      setLoading(true);
+      await Auth.forgotPasswordSubmit(username, code, password);
+      navigation.navigate("SignIn");
+    } catch(e){
+      Alert.alert("OOPS",e.message);
+    }
+    setLoading(false);
   };
 
   const redirectToSignIn = () => {
     navigation.navigate("SignIn");
-  };
-
-  const resendCode = () => {
-    console.warn("Fuck Yoiu");
   };
 
   return (
@@ -47,7 +59,7 @@ const NewPasswordScreen = () => {
         <CustomInput
           placeholder="Cofirmation Code"
           control={control}
-          name="Code"
+          name="code"
         />
         <CustomInput
           placeholder="New password"

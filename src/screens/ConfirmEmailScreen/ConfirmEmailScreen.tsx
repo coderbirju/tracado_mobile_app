@@ -1,32 +1,54 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Alert } from "react-native";
 import { StyleSheet } from "react-native";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { buttonStyles } from "../../constants/enums";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
+import { useRoute } from "@react-navigation/native";
+import { Auth } from "aws-amplify";
 
 const ConfirmEmailScreen = () => {
+  const route = useRoute();
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    watch
+  } = useForm({defaultValues: {username: route?.params?.username}});
 
-  const resendCode = () => {
-    console.warn("resendcode");
+  const username = watch('username');
+
+  const resendCode = async () => {
+    try{
+      setLoading(true);
+      const response = await Auth.resendSignUp(username);
+      Alert.alert("Success", "Code was sent to your number!");
+    } catch(e){
+      Alert.alert("OOPS", e.message);
+    }
   };
 
-  const confirm = (data) => {
-    console.log('data: ', data);
-    console.warn("new account");
+  const confirm = async (data: { username: string; code: string; }) => {
+    if(loading){
+      return;
+    }
+
+    try{
+      setLoading(true);
+      await Auth.confirmSignUp(data.username,data.code);
+      navigation.navigate('SignIn');
+    } catch(e){
+      Alert.alert("OOPS", e.message);
+    }
+    setLoading(false);
   };
 
   const redirectToSignIn = () => {
-    navigation.navigate("Signin");
+    navigation.navigate("SignIn");
   };
 
   return (
@@ -35,7 +57,7 @@ const ConfirmEmailScreen = () => {
         <Text style={styles.title}>Confirm Email</Text>
         <CustomInput
           placeholder="Enter Confirmation Code"
-          name="Code"
+          name="code"
           control={control}
         />
         <CustomButton

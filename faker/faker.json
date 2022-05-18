@@ -1,0 +1,11 @@
+
+{ 
+    "Fake Email account": {
+        "host": "smtp.ethereal.email",
+        "port": 587,
+        "auth": {
+            "user": "zjhf3exem2g2kgsa@ethereal.email",
+            "pass": "Z4qhF4S2xvnC1Wn8Wh"
+        }
+    }
+}s
