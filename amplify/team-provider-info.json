@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tracdoauth-staging-221336-authRole",
+      "UnauthRoleArn": "arn:aws:iam::916161303551:role/amplify-tracdoauth-staging-221336-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::916161303551:role/amplify-tracdoauth-staging-221336-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-tracdoauth-staging-221336-deployment",
+      "UnauthRoleName": "amplify-tracdoauth-staging-221336-unauthRole",
+      "StackName": "amplify-tracdoauth-staging-221336",
+      "StackId": "arn:aws:cloudformation:us-east-1:916161303551:stack/amplify-tracdoauth-staging-221336/4ecf8b50-b39b-11ec-b0f5-0ebf1e5ca9d3",
+      "AmplifyAppId": "dfz4ooqx5my10"
+    },
+    "categories": {
+      "auth": {
+        "TracdoAuth": {}
+      }
+    }
+  }
+}

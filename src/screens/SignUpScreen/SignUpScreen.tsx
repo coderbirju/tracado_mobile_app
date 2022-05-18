@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Alert } from "react-native";
 import { Dimensions, Image, StyleSheet } from "react-native";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import SocialSignInButton from "../../components/SocialSignInButton";
 import { buttonStyles } from "../../constants/enums";
 import { useNavigation } from "@react-navigation/native";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
+import { Auth } from "aws-amplify";
 
 const emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
 
+  const [loading, setLoading] = useState(false);
   const {
     control,
     handleSubmit,
@@ -23,9 +25,23 @@ const SignUpScreen = () => {
 
   let pwd = watch('password');
 
-  const register = (data:any) => {
-      console.log(data);
-    console.warn("new account");
+  const register = async (data:any) => {
+    if(loading){
+      return;
+    }
+      try{
+        setLoading(true);
+        const { username, password, email, name } = data;
+        await Auth.signUp({
+          username,
+          password,
+          attributes:{ name, email, preferred_username: username}
+        });
+        navigation.navigate("ConfirmEmail", {username});
+      } catch(e) {
+        Alert.alert('OOPS', e.message);
+      }
+    setLoading(false);
   };
 
   const termsOfUse = () => {
@@ -39,6 +55,18 @@ const SignUpScreen = () => {
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
         <Text style={styles.title}>Create Account</Text>
+        <CustomInput
+          placeholder="Name"
+          rules={{ 
+              required: "Name is required",
+              maxLength: {
+                  value: 50,
+                  message: "Username Cannot exceed 50 characters"
+              }
+        }}
+          control={control}
+          name="name"
+        />
         <CustomInput
           placeholder="username"
           rules={{ 
@@ -88,7 +116,7 @@ const SignUpScreen = () => {
           name="passwordRepeat"
         />
         <CustomButton
-          text="Register"
+          text={loading ? "Signing Up..." :"Register"}
           onPress={handleSubmit(register)}
           buttonStyle={buttonStyles.PRIMARY}
         />
