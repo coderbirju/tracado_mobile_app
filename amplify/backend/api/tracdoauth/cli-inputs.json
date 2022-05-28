@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "tracdoauth",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/arjunbirju/codestation/TracadoMobile/amplify/backend/api/tracdoauth/schema.graphql",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 7
+    }
+  }
+}
