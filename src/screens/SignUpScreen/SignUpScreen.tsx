@@ -129,7 +129,7 @@ const SignUpScreen = () => {
         <SocialSignInButton />
         <CustomButton
           text="Have an account? Sign In"
-          onPress={handleSubmit(redirectToSignIn)}
+          onPress={redirectToSignIn}
           buttonStyle={buttonStyles.TERTIARY}
         />
       </View>
